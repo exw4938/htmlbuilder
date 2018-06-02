@@ -60,13 +60,13 @@ class HTMLWriter:
 		if len(self.head_items) > 0:
 			file_.write(self.START_HEAD)
 			for i in self.head_items:
-				file_.write(i.write_item())
+				file_.write(i.write_item() + "\n")
 			file_.write(self.END_HEAD)
 
 		if len(self.body_items) > 0:
 			file_.write(self.START_BODY)
 			for i in self.body_items:
-				file_.write(i.write_item())
+				file_.write(i.write_item() + "\n")
 			file_.write(self.END_BODY)
 		
 		file_.write(self.END_TAG)
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	writer = HTMLWriter()
 	header = Header("Hello World!", 3)
 	title = Title("Hello there")
-	writer.add_to_body(header)
+	writer.add_to_body(Underline(Paragraph("test")))
 	writer.add_to_head(title)
 
 	writer.write_doc()

@@ -18,7 +18,9 @@ class Title(Item):
 
 	def write_item(self):
 		#NOTE: possibly need to strip text of \n here?
-		return self.tags.format(self.text) + "\n"
+		if isinstance(self.text, Item):
+			return self.tags.format(self.text.write_item())
+		return self.tags.format(self.text)
 
 
 class Header(Title):
@@ -32,3 +34,26 @@ class Header(Title):
 
 		self.text = text
 		self.tags = "<h{}>{}</h{}>".format(size,'{}', size)
+
+
+class Paragraph(Title):
+	def __init__(self, text):
+		self.text = text
+		self.tags = "<p>{}</p>"
+
+class Formatted(Title):
+	formatting = ["<i>{}</i>", "<u>{}</u>"]
+	ITALICS = 0
+	UNDERLINE = 1
+	def __init__(self, text, form):
+		self.text = text
+		self.tags = self.formatting[form]
+
+
+class Italic(Formatted):
+	def __init__(self, text):
+		super.__init__(text, self.ITALICS)
+
+class Underline(Formatted):
+	def __init__(self, text):
+		super().__init__(text, self.UNDERLINE)
