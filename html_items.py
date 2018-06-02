@@ -52,7 +52,7 @@ class Formatted(Title):
 
 class Italic(Formatted):
 	def __init__(self, text):
-		super.__init__(text, self.ITALICS)
+		super().__init__(text, self.ITALICS)
 
 class Underline(Formatted):
 	def __init__(self, text):
