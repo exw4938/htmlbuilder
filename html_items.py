@@ -11,8 +11,17 @@ class Item(object):
 		"""
 		return
 
+class Title(Item):
+	def __init__(self, text):
+		self.text = text
+		self.tags = "<title>{}</title>"
 
-class Header(Item):
+	def write_item(self):
+		#NOTE: possibly need to strip text of \n here?
+		return self.tags.format(self.text) + "\n"
+
+
+class Header(Title):
 	def __init__(self, text, size):
 		"""
 		Makes a header with the given size and text. Automatically checks 
@@ -22,19 +31,4 @@ class Header(Item):
 			raise ValueError("Header size must be 1-6")
 
 		self.text = text
-		self.size = size
-
-	def get_tags(self):
-		"""
-		Returns a tuple where the first item is the opening tag and
-		the second item is the closing tag
-		"""
-		return ("<h{}>".format(self.size), "</h{}>".format(self.size))
-
-	def write_item(self):
-		"""
-		Returns the html neccessary to properly display the item
-		"""
-		tags = self.get_tags()
-		#NOTE: possibly need to strip text of \n here?
-		return tags[0] + self.text + tags[1] + "\n"
+		self.tags = "<h{}>{}</h{}>".format(size,'{}', size)
