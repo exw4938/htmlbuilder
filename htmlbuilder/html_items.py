@@ -57,3 +57,35 @@ class Italic(Formatted):
 class Underline(Formatted):
 	def __init__(self, text):
 		super().__init__(text, self.UNDERLINE)
+
+class Table(Item):
+	DATA_FORMAT = "\t<td>{}</td>\n"
+	HEADING_FORMAT = "\t<th>{}</th>\n"
+	def __init__(self, headings):
+		"""Construct a table with the given headings"""
+		self.headings = headings
+		self.rows = []
+
+	def add_row(self, row):
+		"""Add a list of items as a row into the table"""
+		if len(row) != len(self.headings):
+			raise ValueError("Length of rows and number of headings must be equal")
+		self.rows += [row]
+
+	def write_item(self):
+		table_data = "<tr>\n"
+		for heading in self.headings:
+			if isinstance(heading, Item):
+				table_data += self.HEADING_FORMAT.format(heading.write_item())
+			else:
+				table_data += self.HEADING_FORMAT.format(heading)
+		table_data += "</tr>\n"
+		for row in self.rows:
+			table_data += "<tr>\n"
+			for item in row:
+				if isinstance(item, Item):
+					table_data += self.DATA_FORMAT.format(item.write_item())
+				else:
+					table_data += self.DATA_FORMAT.format(item)
+			table_data += "</tr>\n"
+		return "<table>\n{}</table>\n".format(table_data)

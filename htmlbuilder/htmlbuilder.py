@@ -79,8 +79,12 @@ if __name__ == '__main__':
 	"""
 	writer = HTMLWriter()
 	header = Header("Hello World!", 3)
+	table = Table(["test1", "test2"])
+	table.add_row(["a", "b"])
+	table.add_row(["c", "d"])
 	title = Title("Hello there")
 	writer.add_to_body(Underline(Paragraph("test")))
 	writer.add_to_head(title)
+	writer.add_to_body(table)
 
 	writer.write_doc()
