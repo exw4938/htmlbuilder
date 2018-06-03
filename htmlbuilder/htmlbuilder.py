@@ -10,7 +10,7 @@ from webbrowser import open_new_tab
 
 
 class HTMLWriter:
-
+	""" Main class which actually does the document writing """
 	START_TAG = "<!DOCTYPE html>\n<html>\n"
 	END_TAG = "</html>"
 	START_BODY = "<body>\n"
@@ -42,9 +42,11 @@ class HTMLWriter:
 			
 
 	def add_to_body(self, item):
+		""" Adds the given item to the body """
 		self.add_item(item, self.body_items)
 
 	def add_to_head(self, item):
+		""" Adds the given item to the head """
 		self.add_item(item, self.head_items)
 
 	def write_doc(self, doc_name="out.html"):
