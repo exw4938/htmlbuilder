@@ -85,7 +85,10 @@ if __name__ == '__main__':
 	table.add_row(["a", "b"])
 	table.add_row(["c", "d"])
 	title = Title("Hello there")
+	p = Paragraph("This is a test paragraph")
+	p.add_perameter({'href':'https://www.google.com'})
 	writer.add_to_body(Underline(Paragraph("test")))
+	writer.add_to_body(p)
 	writer.add_to_head(title)
 	writer.add_to_body(table)
 

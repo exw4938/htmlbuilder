@@ -10,18 +10,52 @@ class Item(object):
 		"""Returns the html neccessary to properly display the item"""
 		return
 
+	@abc.abstractmethod
+	def add_perameter(self, perameter_map):
+		"""
+		Adds the given perameter(s) to the html tag.
+		-----
+		parameter_map: a dictionary with the name of the perameter as the
+		key and the value as the perameter value
+		"""
+		pass
+
+# TODO: possibly parse the text to be put in the tag and insert </br> when a \n comes along
 class Title(Item):
+	perameters = {}
 	def __init__(self, text):
 		"""Create a new Title with the given text"""
 		self.text = text
-		self.tags = "<title>{}</title>"
+		self.tags = "<title{}>{}</title>"
+		self.perameters = {}
+
+	def get_perameters(self):
+		""" 
+		Returns the perameters of the tag in string
+		form for easy substitution
+		"""
+		if len(self.perameters) == 0:
+			return ""
+		output = " "
+		for i in self.perameters:
+			output += str(i) + "=" + str(self.perameters[i])
+		return output + " "
 
 	def write_item(self):
 		"""Returns the html neccessary to properly display the item"""
 		#NOTE: possibly need to strip text of \n here?
 		if isinstance(self.text, Item):
-			return self.tags.format(self.text.write_item())
-		return self.tags.format(self.text)
+			return self.tags.format(self.get_perameters(), self.text.write_item())
+		return self.tags.format(self.get_perameters(), self.text)
+
+	def add_perameter(self, perameter_map):
+		"""
+		Adds the given perameter(s) to the html tag.
+		-----
+		parameter_map: a dictionary with the name of the perameter as the
+		key and the value as the perameter value
+		"""
+		self.perameters.update(perameter_map)
 
 
 class Header(Title):
@@ -42,7 +76,8 @@ class Paragraph(Title):
 	""" Class for a Paragraph html item """
 	def __init__(self, text):
 		self.text = text
-		self.tags = "<p>{}</p>"
+		self.tags = "<p{}>{}</p>"
+		self.perameters = {}
 
 class Formatted(Title):
 	""" Parent class for formatted html items (underline/italics/link) """
