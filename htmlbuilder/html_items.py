@@ -23,7 +23,12 @@ class Item(object):
 # TODO: possibly parse the text to be put in the tag and insert </br> when a \n comes along
 class Title(Item):
 	def __init__(self, text, tag='title'):
-		"""Create a new Title with the given text"""
+		"""
+		Create a new Title with the given text
+		-----
+		text: The text to put in the title
+		tag: var for subclasses to insert their own tags in place of title
+		"""
 		self.text = text
 		self.tags = "<{}{{}}>{{}}</{}>".format(tag, tag)
 		self.perameters = {}
@@ -63,6 +68,9 @@ class Header(Title):
 		"""
 		Makes a header with the given size and text. Automatically checks 
 		that the header size is 1-6.
+		-----
+		text: The text to put in the header
+		size: The size of the header
 		"""
 		if (not type(size) is int) or size > 6 or size < 1:
 			raise ValueError("Header size must be 1-6")
@@ -72,7 +80,7 @@ class Header(Title):
 class Paragraph(Title):
 	""" Class for a Paragraph html item """
 	def __init__(self, text):
-		super(Paragraph, self).__init__(text, 'p')
+		super().__init__(text, 'p')
 
 class Italic(Title):
 	""" Class for italic html text """
@@ -91,7 +99,11 @@ class Table(Item):
 	DATA_FORMAT = "\t<td>{}</td>\n"
 	HEADING_FORMAT = "\t<th>{}</th>\n"
 	def __init__(self, headings):
-		"""Construct a table with the given headings"""
+		"""
+		Construct a table with the given headings
+		-----
+		headings: An array with the table's headings
+		"""
 		self.headings = headings
 		self.rows = []
 
