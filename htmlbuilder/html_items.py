@@ -22,11 +22,11 @@ class Item(object):
 
 # TODO: possibly parse the text to be put in the tag and insert </br> when a \n comes along
 class Title(Item):
-	perameters = {}
 	def __init__(self, text, tag='title'):
 		"""Create a new Title with the given text"""
 		self.text = text
-		self.tags = "<{}{{}}>{{}}</{}>".format(tag)
+		self.tags = "<{}{{}}>{{}}</{}>".format(tag, tag)
+		self.perameters = {}
 
 	def get_perameters(self):
 		""" 
@@ -72,7 +72,7 @@ class Header(Title):
 class Paragraph(Title):
 	""" Class for a Paragraph html item """
 	def __init__(self, text):
-		super().__init__(text, 'p')
+		super(Paragraph, self).__init__(text, 'p')
 
 class Italic(Title):
 	""" Class for italic html text """
@@ -84,7 +84,7 @@ class Underline(Title):
 	""" Class for underlined html text """
 	def __init__(self, text):
 		""" Calls super constructor with specified format type """
-		super().__init__(text, 'u')
+		super(Underline, self).__init__(text, 'u')
 
 class Table(Item):
 	""" Class representing a table in html """
