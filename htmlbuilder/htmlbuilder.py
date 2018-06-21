@@ -28,18 +28,9 @@ class HTMLWriter:
 	def add_item(self, item, item_list):
 		"""
 			Adds the given item to the list of items in the html document
-			item: can be either an Item subclass object or a list of item objects
+			item: a string representing the item
 		"""
-		if type(item) is list:
-			for i in item:
-				if not isinstance(i, Item):
-					raise TypeError("Make sure 'item' is a subclass of 'Item'")
-			item_list += item
-		else:
-			if not isinstance(item, Item):
-				raise TypeError("Make sure 'item' is a subclass of 'Item'")
-			item_list += [item]
-			
+		item_list += [item]
 
 	def add_to_body(self, item):
 		""" Adds the given item to the body """
@@ -62,13 +53,13 @@ class HTMLWriter:
 		if len(self.head_items) > 0:
 			file_.write(self.START_HEAD)
 			for i in self.head_items:
-				file_.write(i.write_item() + "\n")
+				file_.write(i + "\n")
 			file_.write(self.END_HEAD)
 
 		if len(self.body_items) > 0:
 			file_.write(self.START_BODY)
 			for i in self.body_items:
-				file_.write(i.write_item() + "\n")
+				file_.write(i + "\n")
 			file_.write(self.END_BODY)
 		
 		file_.write(self.END_TAG)
@@ -80,16 +71,18 @@ if __name__ == '__main__':
 	Testing for base usage
 	"""
 	writer = HTMLWriter()
-	header = Header("Hello World!", 3)
+	header = header("This is a header", 1)
 	table = Table(["test1", "test2"])
 	table.add_row(["a", "b"])
 	table.add_row(["c", "d"])
-	title = Title("Hello there")
-	p = Paragraph("This is a test paragraph")
-	p.add_perameter({'href':'https://www.google.com'})
-	writer.add_to_body(Underline(Paragraph("test")))
+	doc_title = title("Hello there")
+	p = paragraph("This is a test paragraph", {'href':'https://www.google.com'})
+	print(underline("test"))
+	print(underline(paragraph("test")))
+	writer.add_to_body(underline(paragraph("test")))
 	writer.add_to_body(p)
 	writer.add_to_head(title)
 	writer.add_to_body(table)
 
 	writer.write_doc()
+	
