@@ -7,6 +7,41 @@
 from html_items import *
 from webbrowser import open_new_tab
 
+class Style:
+	def __init__(self):
+		self.tags = "<style>\n{}\n</style>"
+		self.text = ""
+		self.styles = {}
+
+	def add_style(self, style_id, style_values):
+		"""
+		Add a new style or styles to a new or existing css style class
+		-----
+		style_id: the name of the css class to add new style to
+		style_values: a dictionary representing the perameter value
+		pairs to add to the css class
+		"""
+		style_list = [] # List to put processed style_values in
+		for i in style_values:
+			style_list += [str(i) + "=" + str(style_values[i])]
+
+		if style_id in self.styles:
+			self.styles[style_id] += style_list
+		else:
+			self.styles[style_id] = style_list
+
+	def get_styles(self):
+		"""
+		Gets all the style information and puts it into html format
+		then returns it as a string
+		"""
+		output = ""
+		for i in self.styles:
+			output += str(i) + "{\n"
+			for j in self.styles[i]:
+				output += "\t" + str(j) + ";\n"
+			output += "}\n"
+		return self.tags.format(output)
 
 
 class HTMLWriter:
