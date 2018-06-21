@@ -9,7 +9,7 @@ from webbrowser import open_new_tab
 
 class Style:
 	def __init__(self):
-		self.tags = "<style>\n{}\n</style>"
+		self.tags = "<style>\n{}\n</style>\n"
 		self.text = ""
 		self.styles = {}
 
@@ -23,7 +23,7 @@ class Style:
 		"""
 		style_list = [] # List to put processed style_values in
 		for i in style_values:
-			style_list += [str(i) + "=" + str(style_values[i])]
+			style_list += [str(i) + ":" + str(style_values[i])]
 
 		if style_id in self.styles:
 			self.styles[style_id] += style_list
@@ -59,6 +59,7 @@ class HTMLWriter:
 		"""
 		self.head_items = []
 		self.body_items = []
+		self.style = None
 
 	def add_item(self, item, item_list):
 		"""
@@ -84,6 +85,14 @@ class HTMLWriter:
 		""" Adds the given item to the head """
 		self.add_item(item, self.head_items)
 
+	def create_style(self):
+		""" Create a new Style for this HTMLWriter to use """
+		self.style = Style()
+
+	def get_style(self):
+		""" Gets the style of this HTMLWriter object """
+		return self.style
+
 	def write_doc(self, doc_name="out.html"):
 		"""
 			Writes the current items to the file
@@ -98,6 +107,8 @@ class HTMLWriter:
 			file_.write(self.START_HEAD)
 			for i in self.head_items:
 				file_.write(i.write_item() + "\n")
+
+			file_.write(self.style.get_styles())
 			file_.write(self.END_HEAD)
 
 		if len(self.body_items) > 0:
@@ -115,6 +126,9 @@ if __name__ == '__main__':
 	Testing for base usage
 	"""
 	writer = HTMLWriter()
+	writer.create_style()
+	style = writer.get_style()
+	style.add_style('p', {'color':'red'})
 	header = Header("Hello World!", 3)
 	table = Table(["test1", "test2"])
 	table.add_row(["a", "b"])
